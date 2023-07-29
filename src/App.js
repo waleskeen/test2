@@ -6,7 +6,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Card from 'react-bootstrap/Card';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Search } from 'react-bootstrap-icons';
 
 const App = () => {
   const [objWeather, setObjWeather] = useState({});
@@ -24,10 +24,11 @@ const App = () => {
         obj.description = obj.weather[0].description;
         obj.fullCityName = obj.name + ', ' + obj.sys.country;
         obj.tempC = KtoC(obj.main.temp);
+        obj.humidity = obj.main.humidity;
         obj.dateTime = timeStampToDateTime(obj.dt);
 
         // handle success
-        if (objWeather?.base != undefined)
+        if (objWeather?.base !== undefined)
         {
           arrWeather.unshift(objWeather);
           setArrWeather(arrWeather);
@@ -51,7 +52,8 @@ const App = () => {
   }
 
   function timeStampToDateTime(ts){
-    return new Date(ts).toDateString();
+    let dt = new Date(ts * 1000);
+    return dt.toLocaleString();
   }
 
   function handleStrSearchChange(event) {
@@ -79,7 +81,7 @@ const App = () => {
                 id='btnSearch'
                 onClick={onWeatherChange}
               >
-                Search<FontAwesomeIcon icon={['fab', 'microsoft']}/>
+                <Search />
               </button>
             </Col>
           </Row>
@@ -100,7 +102,7 @@ const App = () => {
               Temperatue: {objWeather.tempC}             
             </ListGroup.Item>
             <ListGroup.Item>
-              Humidity: {objWeather.description}             
+              Humidity: {objWeather.humidity}             
             </ListGroup.Item>
             <ListGroup.Item>
               Time: {objWeather.dateTime}             
@@ -118,12 +120,18 @@ const App = () => {
                 <Container>
                   <Row>
                     <Col>
-                      {i + 1}. {w?.fullCityName} 
-                    </Col>
-                    <Col>
+                      <div>
+                        <span>
+                          {i + 1}. {w?.fullCityName} 
+                        </span>
+                        <span style={{float: "right"}}>
+                          {objWeather.dateTime} 
 
+                        </span>
+                      </div>                    
                     </Col>
                   </Row>
+                  <br/>
                 </Container>                            
               </ListGroup.Item>
             );            
