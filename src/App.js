@@ -14,10 +14,12 @@ const App = () => {
   const [arrWeather, setArrWeather] = useState([]);
   const [errorMsg, setErrMsg] = useState([]);
 
+  const APIID = "a29f0aca80e33125e25e4b429be47b62";
+
   function getWeather(pSearch){
     let tmpSearch = pSearch ?? "";
     let url = 'https://api.openweathermap.org/data/2.5/weather?q=' + tmpSearch + 
-      '&APPID=a29f0aca80e33125e25e4b429be47b62';
+      '&APPID=' + APIID;
     axios.get(url)
       .then(function (response) {
         let obj = response.data;
@@ -67,7 +69,6 @@ const App = () => {
 
   function handleStrSearchChange(event) {
     setStrSearch(event.target.value);
-    console.log('value is:', event.target.value);
   };
 
   return (    
