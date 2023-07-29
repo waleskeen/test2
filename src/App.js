@@ -29,7 +29,7 @@ const App = () => {
         obj.tempLC = KtoC(obj.main.temp_min);
         obj.tempLHC = obj.tempLC + '°C ~ ' + obj.tempHC + '°C';
         obj.tempC = KtoC(obj.main.temp);
-        obj.humidity = obj.main.humidity;
+        obj.humidity = obj.main.humidity + '%';
         obj.dateTime = timeStampToDateTime(obj.dt);
 
         // handle success
