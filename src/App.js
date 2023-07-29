@@ -52,7 +52,8 @@ const App = () => {
   }
 
   function onWeatherClearD(pI){
-    setArrWeather(arrWeather.filter((weather, index) => index === i));
+    setArrWeather(arrWeather.filter((weather, index) => index != pI));
+    arrWeather.splice(pI, 1);
   }
 
   function KtoC(k){
