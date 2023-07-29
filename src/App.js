@@ -25,6 +25,9 @@ const App = () => {
         let obj = response.data;
         obj.description = obj.weather[0].description;
         obj.fullCityName = obj.name + ', ' + obj.sys.country;
+        obj.tempHC = KtoC(obj.main.temp_max);
+        obj.tempLC = KtoC(obj.main.temp_min);
+        obj.tempLHC = obj.tempLC + '°C ~ ' + obj.tempHC + '°C';
         obj.tempC = KtoC(obj.main.temp);
         obj.humidity = obj.main.humidity;
         obj.dateTime = timeStampToDateTime(obj.dt);
@@ -69,7 +72,17 @@ const App = () => {
 
   function handleStrSearchChange(event) {
     setStrSearch(event.target.value);
-  };
+  }
+
+  function onKeyChangeStrSearch(event){
+    // If the user presses the "Enter" key on the keyboard
+  if (event.key === "Enter") {
+    // Cancel the default action, if needed
+    event.preventDefault();
+    // Trigger the button element with a click
+    getWeather(strSearch);
+  }
+  }
 
   return (    
     <div id="bg">
@@ -85,6 +98,7 @@ const App = () => {
                   type='text' 
                   placeholder='city' 
                   onChange={handleStrSearchChange}
+                  onKeyDown={onKeyChangeStrSearch}
                 /> 
               </span>
               <span>
@@ -111,7 +125,7 @@ const App = () => {
               Descrption: {objWeather.description}             
             </ListGroup.Item>
             <ListGroup.Item>
-              Temperatue: {objWeather.tempC}             
+              Temperatue: {objWeather.tempLHC}             
             </ListGroup.Item>
             <ListGroup.Item>
               Humidity: {objWeather.humidity}             
