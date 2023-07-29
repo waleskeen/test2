@@ -12,6 +12,7 @@ const App = () => {
   const [objWeather, setObjWeather] = useState({});
   const [strSearch, setStrSearch] = useState('');
   const [arrWeather, setArrWeather] = useState([]);
+  const [errorMsg, setErrMsg] = useState([]);
 
   function getWeather(){
     let tmpSearch = strSearch ?? "";
@@ -19,19 +20,22 @@ const App = () => {
       '&APPID=a29f0aca80e33125e25e4b429be47b62';
     axios.get(url)
       .then(function (response) {
+        let obj = response.data;
+        obj.fullCityName = obj.name + ', ' + obj.sys.country;
         // handle success
-        console.log(response);
-        setObjWeather(response.data);
-        arrWeather.unshift(response.data);
-        setArrWeather(arrWeather);
+        if (objWeather?.base != undefined)
+        {
+          arrWeather.unshift(objWeather);
+          setArrWeather(arrWeather);
+        }        
+        setObjWeather(obj);        
+        setErrMsg("");
       })
       .catch(function (error) {
         // handle error
         console.log(error);
+        setErrMsg("Not Found");
       })
-      .finally(function () {
-        // always executed
-      });
   }
 
   function onWeatherChange(){
@@ -69,17 +73,37 @@ const App = () => {
           </Row>
         </Container>
       </from>
+      <p>
+        {errorMsg}
+      </p>
+      <Card>
+        <Card.Body>
+          <Card.Title>{objWeather?.fullCityName}</Card.Title>
+          <Card.Text>
+          <ListGroup>
+            <ListGroup.Item>
+              Descrption: {objWeather.weather[0]?.description}             
+            </ListGroup.Item>
+            <ListGroup.Item>
+              Temperatue: {objWeather.weather[0]?.description}             
+            </ListGroup.Item>
+            <ListGroup.Item>
+              Humidity: {objWeather.weather[0]?.description}             
+            </ListGroup.Item>
+            <ListGroup.Item>
+              Time: {objWeather.weather[0]?.description}             
+            </ListGroup.Item>
+          </ListGroup>
+          </Card.Text>          
+        </Card.Body>
+      </Card> 
+      <h3>Search History</h3>
       <ListGroup>
         {
           arrWeather.map((w, i) => {
             return(
               <ListGroup.Item>
-                <Card>
-                  <Card.Body>
-                    <Card.Title>{w?.sys?.name}</Card.Title>
-                    {w?.sys?.country}
-                  </Card.Body>
-                </Card>                
+                {i + 1}. {w?.fullCityName}             
               </ListGroup.Item>
             );            
           })
