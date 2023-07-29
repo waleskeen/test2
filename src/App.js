@@ -21,7 +21,11 @@ const App = () => {
     axios.get(url)
       .then(function (response) {
         let obj = response.data;
+        obj.description = obj.weather[0].description;
         obj.fullCityName = obj.name + ', ' + obj.sys.country;
+        obj.tempC = KtoC(obj.main.temp);
+        obj.dateTime = timeStampToDateTime(obj.dt);
+
         // handle success
         if (objWeather?.base != undefined)
         {
@@ -40,6 +44,14 @@ const App = () => {
 
   function onWeatherChange(){
     getWeather();
+  }
+
+  function KtoC(k){
+    return Math.round(k - 273.15);
+  }
+
+  function timeStampToDateTime(ts){
+    return new Date(ts).toDateString();
   }
 
   function handleStrSearchChange(event) {
@@ -82,16 +94,16 @@ const App = () => {
           <Card.Text>
           <ListGroup>
             <ListGroup.Item>
-              Descrption: {objWeather.weather[0]?.description}             
+              Descrption: {objWeather.description}             
             </ListGroup.Item>
             <ListGroup.Item>
-              Temperatue: {objWeather.weather[0]?.description}             
+              Temperatue: {objWeather.tempC}             
             </ListGroup.Item>
             <ListGroup.Item>
-              Humidity: {objWeather.weather[0]?.description}             
+              Humidity: {objWeather.description}             
             </ListGroup.Item>
             <ListGroup.Item>
-              Time: {objWeather.weather[0]?.description}             
+              Time: {objWeather.dateTime}             
             </ListGroup.Item>
           </ListGroup>
           </Card.Text>          
@@ -103,7 +115,16 @@ const App = () => {
           arrWeather.map((w, i) => {
             return(
               <ListGroup.Item>
-                {i + 1}. {w?.fullCityName}             
+                <Container>
+                  <Row>
+                    <Col>
+                      {i + 1}. {w?.fullCityName} 
+                    </Col>
+                    <Col>
+
+                    </Col>
+                  </Row>
+                </Container>                            
               </ListGroup.Item>
             );            
           })
