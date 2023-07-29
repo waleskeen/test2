@@ -1,8 +1,9 @@
 #txtSearch{
-  width: 100%;
+  width: 90%;
 }
 
 #btnSearch{
-  width: 100%;
+  width: 5%;
+  float: right;
 }
 

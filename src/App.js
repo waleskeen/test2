@@ -6,7 +6,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Card from 'react-bootstrap/Card';
-import { Search } from 'react-bootstrap-icons';
+import { Search, Trash } from 'react-bootstrap-icons';
 
 const App = () => {
   const [objWeather, setObjWeather] = useState({});
@@ -14,8 +14,8 @@ const App = () => {
   const [arrWeather, setArrWeather] = useState([]);
   const [errorMsg, setErrMsg] = useState([]);
 
-  function getWeather(){
-    let tmpSearch = strSearch ?? "";
+  function getWeather(pSearch){
+    let tmpSearch = pSearch ?? "";
     let url = 'https://api.openweathermap.org/data/2.5/weather?q=' + tmpSearch + 
       '&APPID=a29f0aca80e33125e25e4b429be47b62';
     axios.get(url)
@@ -44,7 +44,15 @@ const App = () => {
   }
 
   function onWeatherChange(){
-    getWeather();
+    getWeather(strSearch);
+  }
+
+  function onWeatherChangeD(pI){
+    getWeather(arrWeather[pI].name);
+  }
+
+  function onWeatherClearD(pI){
+    setArrWeather(arrWeather.filter((weather, index) => index === i));
   }
 
   function KtoC(k){
@@ -67,22 +75,24 @@ const App = () => {
         <Container>
           <Row>
             <Col>
-              <input 
-                id='txtSearch'
-                name='txtSearch'
-                value={strSearch}
-                type='text' 
-                placeholder='city' 
-                onChange={handleStrSearchChange}
-              /> 
-            </Col>
-            <Col>
-              <button
-                id='btnSearch'
-                onClick={onWeatherChange}
-              >
-                <Search />
-              </button>
+              <span>
+                <input 
+                  id='txtSearch'
+                  name='txtSearch'
+                  value={strSearch}
+                  type='text' 
+                  placeholder='city' 
+                  onChange={handleStrSearchChange}
+                /> 
+              </span>
+              <span>
+                <button
+                  id='btnSearch'
+                  onClick={onWeatherChange}
+                >
+                  <Search />
+                </button>
+              </span>             
             </Col>
           </Row>
         </Container>
@@ -126,7 +136,18 @@ const App = () => {
                         </span>
                         <span style={{float: "right"}}>
                           {objWeather.dateTime} 
-
+                          <button
+                            id={'btnSearch' + i}
+                            onClick={()=>onWeatherChangeD(i)}
+                          >
+                            <Search />
+                          </button>
+                          <button
+                            id={'btnClear' + i}
+                            onClick={()=>onWeatherClearD(i)}
+                          >
+                            <Trash />
+                          </button>
                         </span>
                       </div>                    
                     </Col>
