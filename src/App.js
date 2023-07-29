@@ -1,22 +1,29 @@
 import './App.css';
-import { axios } from 'axios';
-import { Button } from 'react-bootstrap';
+import React, { useState } from "react";
+import axios, * as others from 'axios';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import ListGroup from 'react-bootstrap/ListGroup';
+import Card from 'react-bootstrap/Card';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const App = () => {
-  const axios = require('axios').default;
-  var objWeather = {};
+  const [objWeather, setObjWeather] = useState({});
+  const [strSearch, setStrSearch] = useState('');
+  const [arrWeather, setArrWeather] = useState([]);
 
   function getWeather(){
-    let url = 'https://api.openweathermap.org/data/2.5/weather?q=ipoh&APPID=a29f0aca80e33125e25e4b429be47b62';
+    let tmpSearch = strSearch ?? "";
+    let url = 'https://api.openweathermap.org/data/2.5/weather?q=' + tmpSearch + 
+      '&APPID=a29f0aca80e33125e25e4b429be47b62';
     axios.get(url)
       .then(function (response) {
         // handle success
-        objWeather = response;
         console.log(response);
+        setObjWeather(response.data);
+        arrWeather.unshift(response.data);
+        setArrWeather(arrWeather);
       })
       .catch(function (error) {
         // handle error
@@ -28,71 +35,57 @@ const App = () => {
   }
 
   function onWeatherChange(){
-
+    getWeather();
   }
 
-  getWeather();
+  function handleStrSearchChange(event) {
+    setStrSearch(event.target.value);
+    console.log('value is:', event.target.value);
+  };
 
   return (    
     <div id="bg">
-      <Container>
-        <Row>
-          <Col 
-              xxl={11} 
-              xl={11} 
-              lg={11} 
-              md={11} 
-              sm={11} 
-              xs={11}
-            >
-            1
-          </Col>
-          <Col 
-            xxl={1} 
-            xl={1} 
-            lg={1} 
-            md={1} 
-            sm={1} 
-            xs={1}
-          >
-            1
-          </Col>
-        </Row>
-        <Row>
-          <Col 
-            xxl={11} 
-            xl={11} 
-            lg={11} 
-            md={11} 
-            sm={11} 
-            xs={11}
-          >
-            <input 
-              id='txtSearch'
-              name='txtSearch'
-              type='text' 
-              placeholder='city' 
-            /> 
-          </Col>
-          <Col
-            xxl={1} 
-            xl={1} 
-            lg={1} 
-            md={1} 
-            sm={1} 
-            xs={1}
-          >
-            <button
-              id='btnSearch'
-              onClick={onWeatherChange}
-            >
-              <FontAwesomeIcon icon={['fab', 'microsoft']}/>
-            </button>
-          </Col>
-        </Row>
-      </Container>
-      {objWeather?.weather[0].main}
-    </div>  
+      <from>
+        <Container>
+          <Row>
+            <Col>
+              <input 
+                id='txtSearch'
+                name='txtSearch'
+                value={strSearch}
+                type='text' 
+                placeholder='city' 
+                onChange={handleStrSearchChange}
+              /> 
+            </Col>
+            <Col>
+              <button
+                id='btnSearch'
+                onClick={onWeatherChange}
+              >
+                Search<FontAwesomeIcon icon={['fab', 'microsoft']}/>
+              </button>
+            </Col>
+          </Row>
+        </Container>
+      </from>
+      <ListGroup>
+        {
+          arrWeather.map((w, i) => {
+            return(
+              <ListGroup.Item>
+                <Card>
+                  <Card.Body>
+                    <Card.Title>{w?.sys?.name}</Card.Title>
+                    {w?.sys?.country}
+                  </Card.Body>
+                </Card>                
+              </ListGroup.Item>
+            );            
+          })
+        }
+      </ListGroup>
+    </div>
   );
 };
 

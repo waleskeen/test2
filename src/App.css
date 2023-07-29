@@ -1,13 +1,8 @@
-#bg{
-  background-image: url('asset/bg-dark.png');
-  background-size: cover;
-}
-
 #txtSearch{
-  width: 80%;
+  width: 100%;
 }
 
 #btnSearch{
-  width: 80%;
+  width: 100%;
 }
 
