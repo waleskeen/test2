@@ -1,5 +1,9 @@
 import './App.css';
-import ReactSelect  from 'react-select';
+import { Button } from 'react-bootstrap';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const App = () => {
   const axios = require('axios').default;
@@ -31,23 +35,63 @@ const App = () => {
 
   getWeather();
 
-  return (
-    <div id="bg">
-      <div>
-        <ReactSelect
-          onChange={onWeatherChange}
-          options={arrWeather}
-          placeholder="Country"
-          isSearchable
-          isClearable
+  return (    
+    <Container id="bg">
+      <Row>
+        <Col 
+            xxl={11} 
+            xl={11} 
+            lg={11} 
+            md={11} 
+            sm={11} 
+            xs={11}
+          >
+          1
+        </Col>
+        <Col 
+          xxl={1} 
+          xl={1} 
+          lg={1} 
+          md={1} 
+          sm={1} 
+          xs={1}
         >
-
-        </ReactSelect>
-      </div>  
-      <div>
-        
-      </div>    
-    </div>
+          1
+        </Col>
+      </Row>
+      <Row>
+        <Col 
+          xxl={11} 
+          xl={11} 
+          lg={11} 
+          md={11} 
+          sm={11} 
+          xs={11}
+        >
+          <input 
+            id='txtSearch'
+            name='txtSearch'
+            type='text' 
+            placeholder='city' 
+          /> 
+        </Col>
+        <Col
+          xxl={1} 
+          xl={1} 
+          lg={1} 
+          md={1} 
+          sm={1} 
+          xs={1}
+        >
+          <button
+            id='btnSearch'
+            onClick={onWeatherChange}
+          >
+            <FontAwesomeIcon icon={['fab', 'microsoft']}/>
+          </button>
+        </Col>
+      </Row>
+    </Container>  
   );
 };
 
